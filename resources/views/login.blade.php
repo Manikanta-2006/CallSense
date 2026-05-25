@@ -175,6 +175,7 @@
             border-left: 1.5px solid #111;
             box-shadow: 10px 10px 30px rgba(0,0,0,0.4);
             animation: rightPageIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
+            overflow-y: auto;
         }
 
         @keyframes leftPageIn {
@@ -457,6 +458,216 @@
             background: #fafafa;
         }
 
+        /* ─── CREDENTIAL FORM STYLES ─── */
+        .form-group {
+            margin-bottom: 0.8rem;
+            text-align: left;
+            position: relative;
+            width: 100%;
+        }
+        .form-label {
+            display: block;
+            font-family: 'Bangers', cursive;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #111;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 3px solid #111;
+            background: #fff;
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
+            color: #111;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+            border-radius: 4px;
+        }
+        .form-input:focus {
+            border-color: #d9534f;
+            box-shadow: 4px 4px 0 #111;
+            transform: translate(-1px, -1px);
+        }
+        .btn-submit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background: #d9534f; /* Vintage red accent */
+            color: #fff;
+            border: 3px solid #111;
+            border-radius: 4px;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 5px 5px 0 #111;
+            margin-top: 1.2rem;
+            text-transform: uppercase;
+        }
+        .btn-submit:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 #111;
+            background: #c9302c;
+        }
+        .btn-submit:active {
+            transform: translate(0, 0);
+            box-shadow: 2px 2px 0 #111;
+        }
+        .toggle-link {
+            display: block;
+            margin-top: 1.25rem;
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
+            color: #d9534f;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+            text-align: center;
+            transition: color 0.2s;
+        }
+        .toggle-link:hover {
+            color: #111;
+        }
+
+        /* Red alert speech bubble for errors */
+        .error-bubble {
+            position: relative;
+            background: #ffebeb;
+            border: 3px solid #d9534f;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 4px 4px 0 #111;
+            width: 100%;
+        }
+        .error-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -18px;
+            left: 35px;
+            width: 0; height: 0;
+            border: 9px solid transparent;
+            border-top-color: #d9534f;
+        }
+        .error-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 38px;
+            width: 0; height: 0;
+            border: 6px solid transparent;
+            border-top-color: #ffebeb;
+            z-index: 1;
+        }
+        .error-bubble .bubble-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            color: #c9302c;
+            line-height: 1.3;
+        }
+
+        /* Smooth transition between panels */
+        .login-panel {
+            width: 100%;
+            max-width: 340px;
+            animation: panelFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── TACTICAL BRIEFING LAYOUT (LEFT PAGE) ─── */
+        .tactical-briefing {
+            border: 3px solid #111;
+            padding: 1.5rem;
+            background: #fffdf5;
+            box-shadow: 5px 5px 0 #111;
+            position: relative;
+            transform: rotate(-0.5deg);
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+        .tactical-briefing::before {
+            content: 'CLASSIFIED';
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            border: 3px double #d9534f;
+            color: #d9534f;
+            font-family: 'Bangers', cursive;
+            font-size: 0.8rem;
+            padding: 0.1rem 0.4rem;
+            transform: rotate(8deg);
+            opacity: 0.85;
+            letter-spacing: 2px;
+        }
+        .briefing-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            color: #111;
+            border-bottom: 3px solid #111;
+            padding-bottom: 0.25rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+            text-align: left;
+        }
+        .briefing-meta {
+            font-family: 'Bangers', cursive;
+            font-size: 0.7rem;
+            color: #777;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+        .briefing-section {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .briefing-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 0.85rem;
+            color: #d9534f;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        .briefing-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
+            color: #222;
+            line-height: 1.3;
+        }
+        .briefing-list {
+            margin-left: 0.2rem;
+            list-style: none;
+        }
+        .briefing-list li {
+            position: relative;
+            padding-left: 1.1rem;
+            margin-bottom: 0.35rem;
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.3;
+        }
+        .briefing-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #d9534f;
+            font-size: 0.8rem;
+        }
+
         .system-status {
             position: absolute;
             bottom: 1.5rem;
@@ -560,21 +771,32 @@
         <div class="page-left">
             <div class="action-lines"></div>
             <div class="left-content">
-                <div class="comic-title-label">Issue #01 — Origins</div>
-                <h1 class="comic-title">
-                    CALLSENSE
-                </h1>
-
-                <div class="speech-bubble">
-                    <div class="bubble-text">
-                        "System ready, Agent.<br>Authenticate to begin<br>your mission."
+                <div class="tactical-briefing">
+                    <h2 class="briefing-title">MISSION BRIEFING</h2>
+                    <div class="briefing-meta">STATUS: OPERATIONAL // CLEARANCE: LEVEL 4</div>
+                    
+                    <div class="briefing-section">
+                        <div class="briefing-heading">SYSTEM: CallSense AI Command Deck</div>
+                        <div class="briefing-text">
+                            Active helpdesk telephonic emotion diagnostic and sentiment routing protocol.
+                        </div>
                     </div>
-                </div>
-
-                <div class="mini-strip">
-                    <div class="mini-panel"></div>
-                    <div class="mini-panel"></div>
-                    <div class="mini-panel"></div>
+                    
+                    <div class="briefing-section">
+                        <div class="briefing-heading">PRIMARY OBJECTIVES:</div>
+                        <ul class="briefing-list">
+                            <li>Process customer transcripts via high-accuracy NLP analysis.</li>
+                            <li>Detect critical escalation vectors and caller distress levels.</li>
+                            <li>Broadcast immediate operational alerts to sentiment analysts.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="briefing-section" style="margin-bottom: 0;">
+                        <div class="briefing-heading">OPERATIONAL GUIDELINES:</div>
+                        <div class="briefing-text" style="font-size: 1rem; color: #666;">
+                            Clearance requires standard email/password authentication or verified Google credentials. All login attempts are audited under security ledger.
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="page-number-left">— 01</div>
@@ -584,14 +806,35 @@
         <!-- RIGHT PAGE -->
         <div class="page-right">
             <div class="right-content">
-                <div class="login-panel">
+                <div class="login-panel" id="signInPanel">
                     <div class="access-tag">// ACCESS PORTAL</div>
                     <h2 class="login-title">Enter the<br>Command Center</h2>
-                    <p class="login-subtitle">Authorized personnel only. Sign in with your Google account to continue the story.</p>
+                    <p class="login-subtitle">Sign in with credentials or authorized Google clearance.</p>
 
-                    <div class="auth-notice">
-                        🔒 Clearance required to proceed
-                    </div>
+                    @if ($errors->any())
+                        <div class="error-bubble">
+                            <div class="bubble-text">
+                                ⚠️ <strong>ALERT:</strong> {{ $errors->first() }}
+                            </div>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login.post') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label" for="signin-email">Agent Email</label>
+                            <input type="email" id="signin-email" name="email" class="form-input" required value="{{ old('email') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="signin-password">Secret Password</label>
+                            <input type="password" id="signin-password" name="password" class="form-input" required>
+                        </div>
+
+                        <button type="submit" class="btn-submit">🔑 Sign In</button>
+                    </form>
+
+                    <div class="divider"><span>or</span></div>
 
                     <a href="{{ url('/auth/google') }}" class="btn-google" id="googleBtn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -603,8 +846,50 @@
                         Sign In with Google
                     </a>
 
-                    <div class="divider"><span>or</span></div>
-                    <a href="{{ url('/dashboard') }}" class="btn-dev" id="devBtn">⚡ Dev Access — Skip Login</a>
+
+
+                    <div class="toggle-link" onclick="toggleAuth(true)">Need standard credentials? Sign Up</div>
+                </div>
+
+                <div class="login-panel" id="signUpPanel" style="display: none;">
+                    <div class="access-tag">// ENLISTMENT</div>
+                    <h2 class="login-title">Join the<br>Squad</h2>
+                    <p class="login-subtitle">Register new agent credentials to start your mission.</p>
+
+                    @if ($errors->any())
+                        <div class="error-bubble">
+                            <div class="bubble-text">
+                                ⚠️ <strong>ALERT:</strong> {{ $errors->first() }}
+                            </div>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('register.post') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label" for="signup-name">Agent Name</label>
+                            <input type="text" id="signup-name" name="name" class="form-input" required value="{{ old('name') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signup-email">Agent Email</label>
+                            <input type="email" id="signup-email" name="email" class="form-input" required value="{{ old('email') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="signup-password">Secret Password</label>
+                            <input type="password" id="signup-password" name="password" class="form-input" required placeholder="Min 8 characters">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signup-password-confirm">Confirm Password</label>
+                            <input type="password" id="signup-password-confirm" name="password_confirmation" class="form-input" required>
+                        </div>
+
+                        <button type="submit" class="btn-submit">🎖️ Register Agent</button>
+                    </form>
+
+                    <div class="toggle-link" onclick="toggleAuth(false)">Already an Agent? Sign In</div>
                 </div>
 
                 <div class="system-status">
@@ -671,7 +956,26 @@
                 }, 500);
             });
         });
+
+        // Automatically show sign up if they failed a previous registration attempt
+        const hasOldName = @json(old('name') ? true : false);
+        if (hasOldName) {
+            toggleAuth(true);
+        }
     });
+
+    function toggleAuth(showSignUp) {
+        const signInPanel = document.getElementById('signInPanel');
+        const signUpPanel = document.getElementById('signUpPanel');
+        
+        if (showSignUp) {
+            signInPanel.style.display = 'none';
+            signUpPanel.style.display = 'block';
+        } else {
+            signInPanel.style.display = 'block';
+            signUpPanel.style.display = 'none';
+        }
+    }
 </script>
 </body>
 </html>

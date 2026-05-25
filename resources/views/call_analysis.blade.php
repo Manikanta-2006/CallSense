@@ -230,11 +230,11 @@
                 <div class="panel-tag">// STEP 01 — INCOMING TRANSMISSION</div>
                 <div class="panel-heading">UPLOAD RECORDING</div>
                 <div class="upload-zone" id="uploadZone">
-                    <input type="file" name="audio_file" id="audioFile" accept=".mp3,.wav,.ogg,.m4a,.webm">
+                    <input type="file" name="audio_file" id="audioFile" accept=".mp3,.wav,.ogg,.m4a,.webm,.opus">
                     <div class="upload-icon" id="uploadIcon">📼</div>
                     <div class="upload-text" id="uploadText">
                         <strong>Click to upload</strong> or drag & drop<br>
-                        <div class="upload-formats">MP3 · WAV · OGG · M4A · WEBM — Max 20MB</div>
+                        <div class="upload-formats">MP3 · WAV · OGG · M4A · WEBM · OPUS — Max 20MB</div>
                     </div>
                 </div>
 
@@ -360,7 +360,7 @@
     const audioFileInput=document.getElementById('audioFile'),uploadZone=document.getElementById('uploadZone'),audioPlayer=document.getElementById('audioPlayer'),audioPreview=document.getElementById('audioPreview'),fileNameText=document.getElementById('fileNameText'),removeFileBtn=document.getElementById('removeFile'),analyzeBtn=document.getElementById('analyzeBtn'),transcriptField=document.getElementById('transcript');
     function updateBtn(){analyzeBtn.disabled=!(audioFileInput.files&&audioFileInput.files.length>0);}
     audioFileInput.addEventListener('change',e=>{const f=e.target.files[0];if(f){audioPreview.src=URL.createObjectURL(f);fileNameText.textContent=f.name;audioPlayer.classList.add('visible');uploadZone.classList.add('has-file');document.getElementById('uploadIcon').textContent='✅';document.getElementById('uploadText').innerHTML='<strong>File ready</strong> — click to change';updateBtn();}});
-    removeFileBtn.addEventListener('click',()=>{audioFileInput.value='';audioPreview.src='';audioPlayer.classList.remove('visible');uploadZone.classList.remove('has-file');document.getElementById('uploadIcon').textContent='📼';document.getElementById('uploadText').innerHTML='<strong>Click to upload</strong> or drag & drop<br><div class="upload-formats">MP3 · WAV · OGG · M4A · WEBM — Max 20MB</div>';updateBtn();});
+    removeFileBtn.addEventListener('click',()=>{audioFileInput.value='';audioPreview.src='';audioPlayer.classList.remove('visible');uploadZone.classList.remove('has-file');document.getElementById('uploadIcon').textContent='📼';document.getElementById('uploadText').innerHTML='<strong>Click to upload</strong> or drag & drop<br><div class="upload-formats">MP3 · WAV · OGG · M4A · WEBM · OPUS — Max 20MB</div>';updateBtn();});
     transcriptField.addEventListener('input',updateBtn);
     uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.style.borderColor='#000';});
     uploadZone.addEventListener('dragleave',()=>{uploadZone.style.borderColor='';});

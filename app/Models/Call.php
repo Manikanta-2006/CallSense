@@ -43,10 +43,10 @@ class Call extends Model
      */
     public static function classifyEmotion(float $score, float $magnitude): string
     {
-        if ($score <= -0.7 && $magnitude >= 0.5) return 'angry';
-        if ($score <= -0.3 && $magnitude >= 0.3) return 'frustrated';
-        if ($score >= 0.7 && $magnitude >= 0.5) return 'happy';
-        if ($score >= 0.3 && $magnitude >= 0.3) return 'satisfied';
+        if ($score <= -0.8 && $magnitude >= 0.5) return 'angry';
+        if ($score <= -0.25 && $magnitude >= 0.3) return 'frustrated';
+        if ($score >= 0.8 && $magnitude >= 0.5) return 'happy';
+        if ($score >= 0.25 && $magnitude >= 0.3) return 'satisfied';
         return 'neutral';
     }
 

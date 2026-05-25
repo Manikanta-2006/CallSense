@@ -235,7 +235,7 @@
 
 
 <div class="book-scene">
-    <a href="/auth/google" class="manga-book" onclick="showScan(event, this.href)">
+    <a href="/login" class="manga-book" onclick="showScan(event, this.href)">
         <img src="/manga_cover_art_1778565315512.png" alt="CallSense Manga Cover">
     </a>
 </div>

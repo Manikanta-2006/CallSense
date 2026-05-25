@@ -9,18 +9,24 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AlertController;
 use App\Models\LoginActivity;
 
-// Landing — call analysis is the main page
+// Landing — serves the login page directly
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/calls');
     }
-    return view('welcome');
+    return view('login');
 });
 
-// Explicit login route → redirects to Google
+// Explicit login route → displays standard login/register page
 Route::get('/login', function () {
-    return redirect('/auth/google');
+    if (Auth::check()) {
+        return redirect('/calls');
+    }
+    return view('login');
 })->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 // Google Socialite Auth Routes
 Route::get('/auth/google', [AuthController::class, 'redirect']);

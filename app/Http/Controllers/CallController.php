@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Call;
 use App\Models\Alert;
 use App\Services\SentimentService;
+use App\Services\SpeechToTextService;
 
 class CallController extends Controller
 {
@@ -21,10 +22,10 @@ class CallController extends Controller
     /**
      * Store and analyze a new call — REAL sentiment analysis pipeline.
      */
-    public function store(Request $request, SentimentService $sentimentService)
+    public function store(Request $request, SentimentService $sentimentService, SpeechToTextService $speechToTextService)
     {
         $validated = $request->validate([
-            'audio_file'    => 'required|file|mimes:mp3,wav,ogg,m4a,webm|max:20480',
+            'audio_file'    => 'required|file|mimes:mp3,wav,ogg,m4a,webm,opus|max:20480',
             'transcript'    => 'nullable|string',
             'customer_name' => 'nullable|string|max:255',
             'agent_name'    => 'nullable|string|max:255',
@@ -38,17 +39,13 @@ class CallController extends Controller
         $transcript = $validated['transcript'] ?? null;
         
         if (empty($transcript)) {
-            // Fallback only if both manual input and Voice-to-Text failed
-            $transcript = "No audible speech detected in recording.";
-            
-            \App\Models\ApiUsageLog::create([
-                'user_id'          => $userId,
-                'service'          => 'speech_to_text',
-                'endpoint'         => 'recognize',
-                'tokens_used'      => 0,
-                'success'          => true,
-                'response_time_ms' => 500,
-            ]);
+            // Auto-transcribe from the uploaded audio file
+            $uploadedFile = $request->file('audio_file');
+            $transcript = $speechToTextService->transcribe(
+                $uploadedFile->getRealPath(),
+                $uploadedFile->getClientOriginalName(),
+                $userId
+            );
         }
 
         // Run sentiment analysis on the transcript — REAL API call
@@ -69,11 +66,11 @@ class CallController extends Controller
             $rawResponse = $apiAnalysis['raw_response'] ?? [];
             $keywords = $apiAnalysis['keywords'] ?? [];
 
-            $threshold = auth()->user()->negative_threshold ?? -0.2;
-
+            // Use fixed thresholds for labeling sentiment
+            // The user's negative_threshold is used for alert generation (line 108), not for labeling
             if ($score > 0.2) {
                 $label = 'Positive';
-            } elseif ($score < $threshold) {
+            } elseif ($score < -0.25) {
                 $label = 'Negative';
             } else {
                 $label = 'Neutral';

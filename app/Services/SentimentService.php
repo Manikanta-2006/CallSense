@@ -161,6 +161,32 @@ class SentimentService
             'worst', 'unhelpful', 'stupid', 'frustrated', 'useless',
             'disappointed', 'horrible', 'unacceptable', 'rude', 'never',
             'pathetic', 'disgusting', 'furious', 'waste', 'problem',
+            'poor', 'slow', 'broken', 'fail', 'failure', 'annoyed',
+            'annoying', 'ridiculous', 'incompetent', 'trash',
+            'cancel', 'refund', 'complaint', 'overcharged', 'scam',
+            'defective', 'wrong', 'delay', 'waiting', 'waited',
+            'unresolved', 'ignored', 'misleading', 'fraud', 'sue',
+            'lawsuit', 'regret', 'unhappy', 'dissatisfied',
+        ];
+
+        // Complaint-intent phrases — these indicate strong negative intent
+        // even without emotional words
+        $negativePhrases = [
+            'want to cancel', 'cancel my', 'close my account',
+            'stop my subscription', 'end my subscription',
+            'want a refund', 'give me my money', 'money back',
+            'not working', 'doesn\'t work', 'does not work',
+            'file a complaint', 'speak to manager', 'speak to supervisor',
+            'never again', 'switch to', 'moving to', 'leaving',
+            'wasted my time', 'waste of time', 'waste of money',
+            'taking too long', 'no response', 'no reply', 'no help',
+        ];
+
+        // Intensity amplifiers boost the score magnitude
+        $amplifiers = [
+            'very', 'extremely', 'really', 'absolutely', 'totally',
+            'completely', 'utterly', 'so', 'incredibly', 'highly',
+            'terribly', 'seriously', 'insanely', 'super',
         ];
 
         $pos = 0;
@@ -173,41 +199,95 @@ class SentimentService
             if (str_contains($lower, $word)) $neg++;
         }
 
-        // Net score: positive → +1, negative → -1, neutral → 0
-        $score = ($pos - $neg) * 0.4;
-        $score = max(-1.0, min(1.0, $score));
-        $magnitude = abs($score) > 0 ? 0.8 : 0.1;
+        // Check for complaint-intent phrases (each counts as 1.5 negative hits)
+        $phraseHits = 0;
+        foreach ($negativePhrases as $phrase) {
+            if (str_contains($lower, $phrase)) $phraseHits++;
+        }
+
+        // Check for intensity amplifiers to boost the score
+        $amplifierCount = 0;
+        foreach ($amplifiers as $amp) {
+            if (str_contains($lower, $amp)) $amplifierCount++;
+        }
+
+        // Base score: word hits + phrase hits (phrases count as 1.5 neg each)
+        $effectiveNeg = $neg + ($phraseHits * 1.5);
+        $rawDiff = $pos - $effectiveNeg;
+        $baseScore = $rawDiff * 0.6;
+
+        // Amplifiers boost the score in the dominant direction
+        if ($amplifierCount > 0 && $rawDiff !== 0) {
+            $boost = $amplifierCount * 0.15;
+            $baseScore = $rawDiff > 0
+                ? $baseScore + $boost
+                : $baseScore - $boost;
+        }
+
+        $score = max(-1.0, min(1.0, $baseScore));
+
+        // Magnitude reflects emotional intensity (not direction)
+        $totalHits = $pos + $neg + $phraseHits;
+        $magnitude = min(1.0, ($totalHits * 0.4) + ($amplifierCount * 0.2));
+        if ($totalHits === 0) $magnitude = 0.1;
 
         // Sentence-level mock analysis
         $rawSentences = preg_split('/(?<=[.!?])\s+/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        // If no sentence-ending punctuation, treat entire text as one sentence
+        if (empty($rawSentences)) {
+            $rawSentences = [$text];
+        }
         $sentences = [];
         foreach ($rawSentences as $sentence) {
             $sLower = strtolower($sentence);
             $sPos = 0;
             $sNeg = 0;
+            $sAmp = 0;
             foreach ($positiveWords as $w) { if (str_contains($sLower, $w)) $sPos++; }
             foreach ($negativeWords as $w) { if (str_contains($sLower, $w)) $sNeg++; }
-            $sScore = ($sPos - $sNeg) * 0.5;
+            foreach ($amplifiers as $a) { if (str_contains($sLower, $a)) $sAmp++; }
+
+            $sPhraseHits = 0;
+            foreach ($negativePhrases as $p) { if (str_contains($sLower, $p)) $sPhraseHits++; }
+
+            $sEffectiveNeg = $sNeg + ($sPhraseHits * 1.5);
+            $sDiff = $sPos - $sEffectiveNeg;
+            $sScore = $sDiff * 0.6;
+            if ($sAmp > 0 && $sDiff !== 0) {
+                $sScore = $sDiff > 0 ? $sScore + ($sAmp * 0.15) : $sScore - ($sAmp * 0.15);
+            }
             $sScore = max(-1.0, min(1.0, $sScore));
+            $sMag = min(1.0, (($sPos + $sNeg + $sPhraseHits) * 0.4) + ($sAmp * 0.2));
+            if (($sPos + $sNeg + $sPhraseHits) === 0) $sMag = 0.1;
+
             $sentences[] = [
                 'text'      => trim($sentence),
-                'score'     => $sScore,
-                'magnitude' => abs($sScore) > 0 ? 0.7 : 0.1,
+                'score'     => round($sScore, 2),
+                'magnitude' => round($sMag, 2),
             ];
         }
 
         $keywords = $this->extractKeywords($text);
 
+        Log::info('Mock sentiment analysis', [
+            'text' => $text,
+            'pos_hits' => $pos,
+            'neg_hits' => $neg,
+            'amplifiers' => $amplifierCount,
+            'score' => round($score, 2),
+            'magnitude' => round($magnitude, 2),
+        ]);
+
         return [
-            'score'        => $score,
-            'magnitude'    => $magnitude,
+            'score'        => round($score, 2),
+            'magnitude'    => round($magnitude, 2),
             'sentences'    => $sentences,
             'keywords'     => $keywords,
             'raw_response' => [
                 'source' => 'mock_fallback',
                 'documentSentiment' => [
-                    'score' => $score,
-                    'magnitude' => $magnitude,
+                    'score' => round($score, 2),
+                    'magnitude' => round($magnitude, 2),
                 ],
             ],
         ];
