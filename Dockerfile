@@ -57,4 +57,4 @@ RUN php artisan config:clear \
 EXPOSE ${PORT:-8080}
 
 # Start command
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+CMD touch database/database.sqlite && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
