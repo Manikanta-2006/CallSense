@@ -1,12 +1,15 @@
 # 📞 CallSense — AI-Powered Call Sentiment & Risk Analysis Platform
 
 <p align="center">
+  <a href="https://callsense-s62f.onrender.com"><img src="https://img.shields.io/badge/Live_Demo-https%3A%2F%2Fcallsense--s62f.onrender.com-46E399?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo"></a>
   <img src="https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 13">
   <img src="https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.3+">
   <img src="https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License">
 </p>
+
+> 🌐 **Live Application**: [https://callsense-s62f.onrender.com](https://callsense-s62f.onrender.com)
 
 **CallSense** is an intelligent, real-time audio transcript analysis and risk monitoring system designed for customer support teams, call centers, and emergency services. It leverages AI-driven Speech-to-Text (STT) and Natural Language Processing (NLP) to transcribe audio recordings, detect caller emotions, calculate risk scores, and automatically generate high-priority operational alerts.
 
